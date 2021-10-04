@@ -1,24 +1,33 @@
-import { useEffect, useState } from 'react';
-import { Container } from 'semantic-ui-react';
-import './App.css';
-import DisplayBalance from './components/DisplayBalance';
-import DisplayBalances from './components/DisplayBalances';
-import EntryLines from './components/EntryLines';
-import MainHeader from './components/MainHeader';
-import ModalEdit from './components/ModalEdit';
-import NewEntryForm from './components/NewEntryForm';
-import { createStore } from 'redux';
+import { useEffect, useState } from "react";
+import { Container } from "semantic-ui-react";
+import "./App.css";
+import DisplayBalance from "./components/DisplayBalance";
+import DisplayBalances from "./components/DisplayBalances";
+import EntryLines from "./components/EntryLines";
+import MainHeader from "./components/MainHeader";
+import ModalEdit from "./components/ModalEdit";
+import NewEntryForm from "./components/NewEntryForm";
+import { useSelector } from "react-redux";
+//NOTE: 3 we are importing hook
 
 function App() {
   const [entries, setEntries] = useState(initialEntries);
-  const [description, setDescription] = useState('');
-  const [value, setValue] = useState('');
+  const [description, setDescription] = useState("");
+  const [value, setValue] = useState("");
   const [isExpense, setIsExpense] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [entryId, setEntryId] = useState();
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [expenseTotal, setExpenseTotal] = useState(0);
   const [total, setTotal] = useState(0);
+
+  const entriesRedux = useSelector((state) => {
+    console.log(state);
+    return state.entries;
+  });
+  console.log(entriesRedux);
+  //NOTE: 4 we are using the hook
+
   useEffect(() => {
     if (!isOpen && entryId) {
       const index = entries.findIndex((entry) => entry.id === entryId);
@@ -45,41 +54,7 @@ function App() {
     setExpenseTotal(totalExpenses);
     setIncomeTotal(totalIncomes);
   }, [entries]);
-  ///
-  const store = createStore((state = initialEntries, action) => {
-    console.log(action);
-    let newEntries;
-    switch (action.type) {
-      case 'ADD_ENTRY':
-        newEntries = entries.concat({ ...action.payload });
-        return newEntries;
-      case 'REMOVE_ENTRY':
-        newEntries = entries.filter((entry) => entry.id !== action.payload.id);
-        return newEntries;
-      default:
-        return state;
-    }
-  });
-  store.subscribe(() => {
-    console.log('store: ', store.getState());
-  });
 
-  const payload_add = {
-    id: 5,
-    description: 'Hello from Redux!',
-    value: 999,
-    isExpense: true,
-  };
-
-  const payload_remove = {
-    id: 1,
-  };
-
-  store.dispatch({ type: 'ADD_ENTRY', payload: payload_add });
-  store.dispatch({ type: 'REMOVE_ENTRY', payload: payload_remove });
-
-  ///
-  //const deleteEntry = (id) => {}
   function deleteEntry(id) {
     const result = entries.filter((entry) => entry.id !== id);
     setEntries(result);
@@ -105,15 +80,15 @@ function App() {
       value,
       isExpense,
     });
-    console.log('result', result);
-    console.log('entries', entries);
+    console.log("result", result);
+    console.log("entries", entries);
     setEntries(result);
     resetEntry();
   }
 
   function resetEntry() {
-    setDescription('');
-    setValue('');
+    setDescription("");
+    setValue("");
     setIsExpense(true);
   }
 
@@ -126,7 +101,8 @@ function App() {
       <MainHeader title='History' type='h3' />
 
       <EntryLines
-        entries={entries}
+        entries={entriesRedux}
+        // NOTE: 5 now we are able to use the data from our store due to Provider
         deleteEntry={deleteEntry}
         editEntry={editEntry}
       />
@@ -155,32 +131,31 @@ function App() {
     </Container>
   );
 }
-
-export default App;
-
 var initialEntries = [
   {
     id: 1,
-    description: 'Work income',
+    description: "Work income",
     value: 1000.0,
     isExpense: false,
   },
   {
     id: 2,
-    description: 'Water bill',
+    description: "Water bill",
     value: 20.0,
     isExpense: true,
   },
   {
     id: 3,
-    description: 'Rent',
+    description: "Rent",
     value: 300,
     isExpense: true,
   },
   {
     id: 4,
-    description: 'Power bill',
+    description: "Power bill",
     value: 50,
     isExpense: true,
   },
 ];
+
+export default App;
