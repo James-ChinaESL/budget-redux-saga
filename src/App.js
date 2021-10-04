@@ -11,6 +11,8 @@ import { createStore } from "redux";
 
 function App() {
   console.log("hello world");
+  console.log("some changes");
+  console.log("some changes");
 
   const [entries, setEntries] = useState(initialEntries);
   const [description, setDescription] = useState("");
