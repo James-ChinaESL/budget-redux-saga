@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Container } from 'semantic-ui-react';
-import './App.css';
-import DisplayBalance from './components/DisplayBalance';
-import DisplayBalances from './components/DisplayBalances';
-import EntryLines from './components/EntryLines';
-import MainHeader from './components/MainHeader';
-import ModalEdit from './components/ModalEdit';
-import NewEntryForm from './components/NewEntryForm';
-import { createStore } from 'redux';
+import { useEffect, useState } from "react";
+import { Container } from "semantic-ui-react";
+import "./App.css";
+import DisplayBalance from "./components/DisplayBalance";
+import DisplayBalances from "./components/DisplayBalances";
+import EntryLines from "./components/EntryLines";
+import MainHeader from "./components/MainHeader";
+import ModalEdit from "./components/ModalEdit";
+import NewEntryForm from "./components/NewEntryForm";
+import { createStore } from "redux";
 
 function App() {
+  console.log("hello world");
+
   const [entries, setEntries] = useState(initialEntries);
-  const [description, setDescription] = useState('');
-  const [value, setValue] = useState('');
+  const [description, setDescription] = useState("");
+  const [value, setValue] = useState("");
   const [isExpense, setIsExpense] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [entryId, setEntryId] = useState();
@@ -50,10 +52,10 @@ function App() {
     console.log(action);
     let newEntries;
     switch (action.type) {
-      case 'ADD_ENTRY':
+      case "ADD_ENTRY":
         newEntries = entries.concat({ ...action.payload });
         return newEntries;
-      case 'REMOVE_ENTRY':
+      case "REMOVE_ENTRY":
         newEntries = entries.filter((entry) => entry.id !== action.payload.id);
         return newEntries;
       default:
@@ -61,12 +63,12 @@ function App() {
     }
   });
   store.subscribe(() => {
-    console.log('store: ', store.getState());
+    console.log("store: ", store.getState());
   });
 
   const payload_add = {
     id: 5,
-    description: 'Hello from Redux!',
+    description: "Hello from Redux!",
     value: 999,
     isExpense: true,
   };
@@ -75,8 +77,8 @@ function App() {
     id: 1,
   };
 
-  store.dispatch({ type: 'ADD_ENTRY', payload: payload_add });
-  store.dispatch({ type: 'REMOVE_ENTRY', payload: payload_remove });
+  store.dispatch({ type: "ADD_ENTRY", payload: payload_add });
+  store.dispatch({ type: "REMOVE_ENTRY", payload: payload_remove });
 
   ///
   //const deleteEntry = (id) => {}
@@ -105,15 +107,15 @@ function App() {
       value,
       isExpense,
     });
-    console.log('result', result);
-    console.log('entries', entries);
+    console.log("result", result);
+    console.log("entries", entries);
     setEntries(result);
     resetEntry();
   }
 
   function resetEntry() {
-    setDescription('');
-    setValue('');
+    setDescription("");
+    setValue("");
     setIsExpense(true);
   }
 
@@ -161,25 +163,25 @@ export default App;
 var initialEntries = [
   {
     id: 1,
-    description: 'Work income',
+    description: "Work income",
     value: 1000.0,
     isExpense: false,
   },
   {
     id: 2,
-    description: 'Water bill',
+    description: "Water bill",
     value: 20.0,
     isExpense: true,
   },
   {
     id: 3,
-    description: 'Rent',
+    description: "Rent",
     value: 300,
     isExpense: true,
   },
   {
     id: 4,
-    description: 'Power bill',
+    description: "Power bill",
     value: 50,
     isExpense: true,
   },
