@@ -1,6 +1,6 @@
-# Budget app
+### Budget app
 
-# View at https://budget-redux-saga.web.app/
+#### View at https://budget-redux-saga.web.app/
 
 - Redux
 - Redux Sagas
